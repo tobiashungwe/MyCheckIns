@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, CircularProgress, Alert } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
+import { isSameDay } from 'date-fns';
 import CustomCalendar from './CustomCalendar';
 import MonthlyView from './MonthlyView';
 import PostList from './PostList';
@@ -122,8 +122,16 @@ export default function BlogCalendar() {
    * ------------------------------------------------ */
   const jumpToDate = (date) => {
     setSelectedDate(date);
-    // smooth-scroll calendar into view
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // when a date-cell with posts is clicked
+  const handleSelectDay = (date) => {
+    const todaysPosts = posts.filter((p) =>
+      isSameDay(new Date(p.date), date)
+    );
+    if (todaysPosts.length) openPost(todaysPosts[0]); // open first
+    jumpToDate(date);
   };
 
   const openPost = (post) => setModalPost(post);
@@ -153,10 +161,13 @@ export default function BlogCalendar() {
       {/* Calendar wrapper – centred, max 1100 px */}
       <Box sx={{ px: { xs: 2, md: 4 }, pb: 6 }}>
         <Box sx={{ width: '100%', maxWidth: '100%', mx: 'auto' }}>
+
           <CustomCalendar
             initialDate={selectedDate}
             onShowMonthly={() => setShowMonthly(true)}
             events={calendarEvents}
+            posts={posts}                 
+            onSelectDay={handleSelectDay}
           />
         </Box>
 
@@ -185,9 +196,10 @@ export default function BlogCalendar() {
       {showMonthly && (
         <MonthlyView
           initialDate={selectedDate}
+          posts={posts}                 // ⬅ new
           onClose={() => setShowMonthly(false)}
           onSelectDay={(d) => {
-            jumpToDate(d);
+            handleSelectDay(d);
             setShowMonthly(false);
           }}
         />

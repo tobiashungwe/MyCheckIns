@@ -3,7 +3,13 @@ import "./Calendar.scss";
 import { format, addWeeks, subWeeks, startOfWeek, endOfWeek, eachDayOfInterval, isToday, isSameDay } from "date-fns";
 import { enGB } from "date-fns/locale";
 
-export default function CustomCalendar({ initialDate, onShowMonthly, events = [] }) {
+export default function CustomCalendar({
+    initialDate,
+    onShowMonthly,
+    events = [],
+    posts = [],
+    onSelectDay = () => {},
+  }) {
   const [currentDate, setCurrentDate] = useState(initialDate || new Date());
 
   useEffect(() => {
@@ -35,9 +41,20 @@ export default function CustomCalendar({ initialDate, onShowMonthly, events = []
       <div className="dates-grid">
         {weekDays.map((day, index) => {
           const today = isToday(day);
-          const dayEvents = events.filter(event => isSameDay(new Date(event.start), day));
+          const dayEvents = events.filter((e) =>
+            isSameDay(new Date(e.start), day)
+          );
+          const hasPost = posts.some((p) =>
+            isSameDay(new Date(p.date), day)
+          );          
           return (
-            <div key={index} className={`date-box ${today ? "today" : ""}`}>
+            <div
+              key={index}
+              className={`date-box ${today ? "today" : ""} ${
+                hasPost ? "has-post" : ""
+              }`}
+              onClick={() => hasPost && onSelectDay(day)}
+            >
               <span className="date-number">{format(day, "d")}</span>
               {today ? (
                 <span className="today-text">Today</span>

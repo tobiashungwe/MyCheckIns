@@ -9,14 +9,19 @@ import {
   addMonths,
   subMonths,
   isSameMonth,
+  isSameDay,
   isToday,
 } from "date-fns";
 import { enGB } from "date-fns/locale";
 import "./MonthlyView.scss";
 
-export default function MonthlyView({ initialDate, onClose, onSelectDay }) {
+export default function MonthlyView({
+    initialDate,
+    onClose,
+    onSelectDay,
+    posts = [],
+  }) {
   const [currentDate, setCurrentDate] = useState(initialDate);
-
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
   const startDate = startOfWeek(monthStart, { weekStartsOn: 1 });
@@ -44,19 +49,24 @@ export default function MonthlyView({ initialDate, onClose, onSelectDay }) {
           ))}
         </div>
         <div className="days-grid">
-          {days.map((day, index) => (
-            <div
-              key={index}
-              className={`day-cell ${!isSameMonth(day, currentDate) ? "disabled" : ""} ${isToday(day) ? "today" : ""}`}
-              onClick={() => {
-                if (isSameMonth(day, currentDate)) {
-                  onSelectDay(day);
-                }
-              }}
-            >
-              {format(day, "d")}
-            </div>
-          ))}
+          {days.map((day, index) => {
+            const hasPost = posts.some((p) =>
+              isSameDay(new Date(p.date), day)
+            );
+            return (
+              <div
+                key={index}
+                className={`day-cell ${
+                  !isSameMonth(day, currentDate) ? "disabled" : ""
+                } ${isToday(day) ? "today" : ""} ${hasPost ? "has-post" : ""}`}
+                onClick={() => {
+                  if (isSameMonth(day, currentDate)) onSelectDay(day);
+                }}
+              >
+                {format(day, "d")}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -163,3 +163,12 @@ html, body {
   margin-top: 4px;
   display: inline-block;
 }
+
+/* highlight cells that have posts */
+.date-box.has-post {
+  background: #ffecec;     /* pastel coral tint */
+  border: 1px solid #f9b8b2;
+}
+.date-box.has-post:hover {
+  background: #ffdede;
+}

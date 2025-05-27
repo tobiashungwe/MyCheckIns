@@ -107,3 +107,12 @@
   font-weight: bold;
   border: 2px solid #0044cc;
 }
+
+
+.day-cell.has-post {
+  background: #ffecec;
+  border: 1px solid #f9b8b2;
+}
+.day-cell.has-post:hover {
+  background: #ffdede;
+}
