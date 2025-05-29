@@ -1,26 +1,32 @@
-from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey
+# database.py
+from datetime import date
+from sqlalchemy import (
+    create_engine,
+    Column,
+    Integer,
+    String,
+    Date,
+    Text,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
-class DBVisit(Base):
-    __tablename__ = "visits"
+# ─────────────── NEW ───────────────
+class DBPost(Base):
+    __tablename__ = "posts"
     id = Column(Integer, primary_key=True, index=True)
-    visitor_name = Column(String(100))
-    start_date = Column(Date)
-    end_date = Column(Date)
-    notes = Column(String(500), nullable=True)
+    title = Column(String(250), nullable=False)
+    publish_date = Column(Date, default=date.today, nullable=False)
+    body_md = Column(Text, nullable=False)          # raw Markdown
+# ────────────────────────────────────
 
-class DBVisitRequirement(Base):
-    __tablename__ = "visit_requirements"
-    id = Column(Integer, primary_key=True, index=True)
-    visit_id = Column(Integer, ForeignKey('visits.id'))
-    meal_request = Column(String(200), nullable=True)
-    special_notes = Column(String(500), nullable=True)
+# (keep your old Visit tables here or remove if unused)
 
 DATABASE_URL = "mysql+pymysql://user:password@localhost:3306/main_db"
-engine = create_engine(DATABASE_URL)
+
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def create_tables():

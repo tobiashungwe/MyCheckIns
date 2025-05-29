@@ -3,9 +3,9 @@ import { createTheme } from '@mui/material/styles'
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#F98F88',        // pastel coral
-      light: '#FFC8C3',
-      dark: '#D47069',
+      main: '#8DC6FF',        // pastel coral
+      light: '#d6f4ff',
+      dark: '#5490c6',
       contrastText: '#fff',
     },
     secondary: {

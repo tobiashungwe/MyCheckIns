@@ -158,10 +158,9 @@ export default function BlogCalendar() {
 
   return (
     <>
-      {/* Calendar wrapper – centred, max 1100 px */}
+      {/* Calendar wrapper – 80 vw up to 1600 px on ultra-wide */}
       <Box sx={{ px: { xs: 2, md: 4 }, pb: 6 }}>
-        <Box sx={{ width: '100%', maxWidth: '100%', mx: 'auto' }}>
-
+        <Box sx={{ width: '80vw', maxWidth: 1600, mx: 'auto' }}>
           <CustomCalendar
             initialDate={selectedDate}
             onShowMonthly={() => setShowMonthly(true)}
@@ -188,7 +187,7 @@ export default function BlogCalendar() {
       </Box>
 
       {/* Post list – centred */}
-      <Box sx={{ width: '100%', maxWidth: 1400, mx: 'auto' }}>
+      <Box sx={{ width: '80vw', maxWidth: 1600, mx: 'auto' }}>
         <PostList posts={posts} onJumpToDate={jumpToDate} onOpenPost={openPost} />
       </Box>
 

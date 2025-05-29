@@ -1,30 +1,20 @@
+# models.py
 from datetime import date
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, Field
 
-class VisitBase(BaseModel):
-    visitor_name: str
-    start_date: date
-    end_date: date
-    notes: Optional[str] = None
+# ───────────── Posts ─────────────
+class PostBase(BaseModel):
+    title: str = Field(..., max_length=250)
+    publish_date: date | None = None                # optional → defaults today
 
-class VisitCreate(VisitBase):
-    pass
+class PostCreate(PostBase):
+    pass                                            # body comes from upload file
 
-class Visit(VisitBase):
+class PostUpdate(PostBase):
+    body_md: str                                    # full Markdown in body
+
+class Post(PostBase):
     id: int
-    class Config:
-        orm_mode = True
-
-class VisitRequirementBase(BaseModel):
-    visit_id: int
-    meal_request: Optional[str] = None
-    special_notes: Optional[str] = None
-
-class VisitRequirementCreate(VisitRequirementBase):
-    pass
-
-class VisitRequirement(VisitRequirementBase):
-    id: int
+    body_md: str
     class Config:
         orm_mode = True

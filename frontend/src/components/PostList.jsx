@@ -3,8 +3,18 @@ import { Box, Card, CardContent, Typography, Button } from '@mui/material';
 import { motion } from 'framer-motion';
 
 export default function PostList({ posts, onJumpToDate, onOpenPost }) {
-  return (
-    <Box sx={{ mt: 6, mx: 'auto', px: 2, maxWidth: 960, display: 'flex', flexDirection: 'column', gap: 3 }}>
+    return (
+      <Box
+        sx={{
+          mt: 6,
+          mx: 'auto',
+          px: 2,
+          width: '100%',          // allow 90 vw container to decide the limit
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
+        }}
+      >
       {posts.map((post) => (
         <motion.div
           key={post.id}
