@@ -39,6 +39,8 @@ export default function BlogCalendar() {
             p.body_md.split('\n')[0].slice(0, 140) +    // first line, max 140
             (p.body_md.length > 140 ? '…' : ''),
         }));
+        // sort by date ascending
+        mapped.sort((a, b) => new Date(a.date) - new Date(b.date));
         setPosts(mapped);
       } catch (err) {
         console.error(err);
