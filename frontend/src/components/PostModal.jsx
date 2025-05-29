@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import { Dialog, DialogContent, IconButton, Typography } from '@mui/material';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function PostModal({ open, post, onClose }) {
@@ -27,9 +29,19 @@ export default function PostModal({ open, post, onClose }) {
           <Typography variant="subtitle2" color="text.secondary" gutterBottom>
             {new Date(post.date).toLocaleDateString()}
           </Typography>
-          <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p: (props) => (
+                <Typography variant="body1" gutterBottom {...props} />
+              ),
+              h2: (props) => (
+                <Typography variant="h6" sx={{ mt: 3 }} {...props} />
+              ),
+            }}
+          >
             {post.content}
-          </Typography>
+          </ReactMarkdown>
         </DialogContent>
       )}
     </Dialog>
