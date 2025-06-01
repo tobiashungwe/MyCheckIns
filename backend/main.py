@@ -1,13 +1,9 @@
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from infrastructure.adapters.http.endpoints import router
 from infrastructure.persistence.database import create_tables
-from pathlib import Path
+from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI
+from settings import MEDIA_DIR  
 
-
-BASE_DIR = Path(__file__).resolve().parent
-MEDIA_DIR = BASE_DIR / "media" 
-MEDIA_DIR.mkdir(exist_ok=True)
 
 create_tables()
 

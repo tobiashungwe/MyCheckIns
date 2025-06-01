@@ -13,9 +13,7 @@ from infrastructure.persistence.database import SessionLocal, DBPost
 from infrastructure.auth.auth import require_api_key
 import os, uuid
 from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent
-MEDIA_DIR = BASE_DIR / "media"  
+from settings import MEDIA_DIR
 
 router = APIRouter()
 
@@ -113,6 +111,7 @@ async def upload_image(
 
     filename = f"{uuid.uuid4().hex}{ext}"
     dest = MEDIA_DIR / filename
+    dest.parent.mkdir(parents=True, exist_ok=True) 
     dest.write_bytes(await file.read())
 
     base = str(request.base_url).rstrip("/")      # http://localhost:8000
