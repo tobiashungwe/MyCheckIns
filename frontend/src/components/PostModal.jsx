@@ -11,7 +11,31 @@ import CloseIcon from '@mui/icons-material/Close';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';          // ⬅ allow inline HTML (optional)
-import rehypeSanitize from 'rehype-sanitize'; // ⬅ strip unsafe tags
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
+
+const videoSchema = {
+  ...defaultSchema,
+  tagNames: [
+    ...(defaultSchema.tagNames || []),
+    'iframe',
+    'video',
+    'source',
+  ],
+  attributes: {
+    ...(defaultSchema.attributes || {}),
+    iframe: [
+      'src',
+      'width',
+      'height',
+      'allow',
+      'allowfullscreen',
+      'title',
+      'frameborder',
+    ],
+    video: ['src', 'width', 'height', 'controls'],
+    source: ['src', 'type'],
+  },
+}; // ⬅ strip unsafe tags
 
 export default function PostModal({ open, post, onClose }) {
   return (
@@ -43,7 +67,7 @@ export default function PostModal({ open, post, onClose }) {
 
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw, rehypeSanitize]}
+            rehypePlugins={[rehypeRaw, [rehypeSanitize, videoSchema]]}
             components={{
               /* paragraphs & headings via MUI */
               p: (props) => (
