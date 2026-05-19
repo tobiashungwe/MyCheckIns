@@ -1,5 +1,6 @@
 # auth.py
 import os
+from typing import Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import APIKeyHeader
 
@@ -15,7 +16,7 @@ def get_api_key():
 
 EXPECTED_KEY = get_api_key()
 
-def require_api_key(api_key: str | None = Depends(API_KEY_HEADER)):
+def require_api_key(api_key: Optional[str] = Depends(API_KEY_HEADER)):
     if api_key != EXPECTED_KEY:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

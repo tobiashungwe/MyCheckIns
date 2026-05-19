@@ -24,7 +24,7 @@ class DBPost(Base):
 
 # (keep your old Visit tables here or remove if unused)
 
-DATABASE_URL = "mysql+pymysql://user:password@localhost:3306/main_db"
+DATABASE_URL = __import__("os").getenv("DATABASE_URL", "mysql+pymysql://user:password@db:3306/main_db")
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
