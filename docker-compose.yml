@@ -1,10 +1,9 @@
 services:
   frontend:
     build: ./frontend
-    ports:
-      - "80:80"
     networks:
       - erasmus-network
+      - proxy
     depends_on:
       - backend
 
@@ -38,6 +37,8 @@ services:
 networks:
   erasmus-network:
     driver: bridge
+  proxy:
+    external: true
 
 volumes:
   mysql_data:
